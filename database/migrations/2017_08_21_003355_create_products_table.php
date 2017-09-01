@@ -18,7 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('name', 100);
             $table->string('description', 500);
             $table->integer('category_id');
-            $table->string('barcode', 50);
+            $table->string('barcode', 50); 
+            $table->string('image')->unique();
             $table->timestamps();
         });
     }
