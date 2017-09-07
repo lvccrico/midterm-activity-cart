@@ -28,7 +28,7 @@
                         <div class="thumbnail">
                             <div class="caption text-center">
                                 <a href="{{ url('shop', [$product->price_id]) }}"><img src="{{ asset('img/' . $product->image) }}" alt="product" class="img-responsive"></a>
-                                <a href="{{ url('shop', [$product->price_id]) }}"><h3>{{ $product->name }}</h3>
+                                <a href="{{ url('shop', [$product->price_id]) }}"><h3>{{ $product->name }}</h3>```
                                 <i>{{ $product->price_description}}</i>
                                 <p>${{ $product->price }}</p>
                                 </a>

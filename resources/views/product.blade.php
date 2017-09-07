@@ -18,9 +18,9 @@
                 <h4>For ${{ $product->price }}</h3>
                 <form action="{{ url('/cart') }}" method="POST" class="side-by-side">
                     {!! csrf_field() !!}
-                    <input type="hidden" name="id" value="{{ $product->id }}">
-                    <input type="hidden" name="name" value="{{ $product->name }}">
-                    {{-- <input type="hidden" name="price" value="{{ $product->price }}"> --}}
+                    <input type="hidden" name="product_price_id" value="{{ $product->product_price_id }}">
+                    <input type="hidden" name="amount" value="{{ $product->price }}">
+                    <input type="hidden" name="barcode" value="{{ $product->barcode }}">
                     <input type="submit" class="btn btn-success btn-lg" value="Add to Cart">
                 </form>
 

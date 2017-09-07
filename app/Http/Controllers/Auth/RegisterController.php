@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Customer;
+use App\Cart;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -28,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -74,6 +75,10 @@ class RegisterController extends Controller
         $user = new User;
         $user->email = $data['email'];
         $user->password = bcrypt($data['password']);
+
+        $cart = new Cart; 
+        $cart->customer()->associate($customer);
+        $cart->save();
 
         return $customer->user()->save($user);
     }

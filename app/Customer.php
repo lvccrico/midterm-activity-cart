@@ -18,4 +18,8 @@ class Customer extends Model
     public function user() {
     	return $this->hasOne('App\User');	
     }
+
+    public function carts() {
+        return $this->hasMany('App\Cart');
+    }
 }

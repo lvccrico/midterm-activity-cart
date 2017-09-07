@@ -16,9 +16,9 @@ class CreateCartsTable extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('customer_id'); 
-            $table->boolean('is_checkout'); 
-            $table->boolean('is_cancelled'); 
-            $table->boolean('is_abandoned'); 
+            $table->boolean('is_checkout')->nullable(); 
+            $table->boolean('is_cancelled')->nullable(); 
+            $table->boolean('is_abandoned')->nullable(); 
             $table->timestamps();
         });
     }

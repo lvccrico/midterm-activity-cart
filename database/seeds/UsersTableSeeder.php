@@ -2,6 +2,8 @@
 
 use App\Customer;
 use App\User;
+use App\Cart;
+
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -22,6 +24,10 @@ class UsersTableSeeder extends Seeder
         $user = new User;
         $user->email = 'juan.dela.cruz@example.com';
         $user->password = bcrypt('secret123');
+
+        $cart = new Cart;
+        $cart->customer()->associate($customer);
+        $cart->save();
 
         $customer->user()->save($user);
     }

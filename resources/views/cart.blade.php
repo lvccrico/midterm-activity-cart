@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 
@@ -20,7 +20,7 @@
             </div>
         @endif
 
-        @if (sizeof(Cart::content()) > 0)
+        @if (sizeof($items) > 0)
 
             <table class="table">
                 <thead>
@@ -35,32 +35,27 @@
                 </thead>
 
                 <tbody>
-                    @foreach (Cart::content() as $item)
+                    @foreach ($items as $item)
                     <tr>
-                        <td class="table-image"><a href="{{ url('shop', [$item->model->slug]) }}"><img src="{{ asset('img/' . $item->model->image) }}" alt="product" class="img-responsive cart-image"></a></td>
-                        <td><a href="{{ url('shop', [$item->model->slug]) }}">{{ $item->name }}</a></td>
+                        <td class="table-image"><a href="{{ url('shop', [$item->id]) }}"><img src="{{ asset('img/' . $item->product->image) }}" alt="product" class="img-responsive cart-image"></a></td>
+                        <td><a href="{{ url('shop', [$item->id]) }}">{{ $item->product->name }}</a></td>
                         <td>
-                            <select class="quantity" data-id="{{ $item->rowId }}">
-                                <option {{ $item->qty == 1 ? 'selected' : '' }}>1</option>
-                                <option {{ $item->qty == 2 ? 'selected' : '' }}>2</option>
-                                <option {{ $item->qty == 3 ? 'selected' : '' }}>3</option>
-                                <option {{ $item->qty == 4 ? 'selected' : '' }}>4</option>
-                                <option {{ $item->qty == 5 ? 'selected' : '' }}>5</option>
+                            <select class="quantity" id="quantity" data-id="{{ $item->id }}">
+                                <option {{ $item->pivot->quantity == 1 ? 'selected' : '' }}>1</option>
+                                <option {{ $item->pivot->quantity == 2 ? 'selected' : '' }}>2</option>
+                                <option {{ $item->pivot->quantity == 3 ? 'selected' : '' }}>3</option>
+                                <option {{ $item->pivot->quantity == 4 ? 'selected' : '' }}>4</option>
+                                <option {{ $item->pivot->quantity == 5 ? 'selected' : '' }}>5</option>
                             </select>
                         </td>
-                        <td>${{ $item->subtotal }}</td>
+                        <td>${{ ($item->pivot->quantity * $item->price) }}</td>
                         <td class=""></td>
                         <td>
-                            <form action="{{ url('cart', [$item->rowId]) }}" method="POST" class="side-by-side">
+                            <form action="{{ url('cart', $item->id) }}" method="POST" class="side-by-side">
                                 {!! csrf_field() !!}
                                 <input type="hidden" name="_method" value="DELETE">
                                 <input type="submit" class="btn btn-danger btn-sm" value="Remove">
-                            </form>
-
-                            <form action="{{ url('switchToWishlist', [$item->rowId]) }}" method="POST" class="side-by-side">
-                                {!! csrf_field() !!}
-                                <input type="submit" class="btn btn-success btn-sm" value="To Wishlist">
-                            </form>
+                            </form> 
                         </td>
                     </tr>
 
@@ -69,15 +64,7 @@
                         <td class="table-image"></td>
                         <td></td>
                         <td class="small-caps table-bg" style="text-align: right">Subtotal</td>
-                        <td>${{ Cart::instance('default')->subtotal() }}</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="table-image"></td>
-                        <td></td>
-                        <td class="small-caps table-bg" style="text-align: right">Tax</td>
-                        <td>${{ Cart::instance('default')->tax() }}</td>
+                        <td>${{ $total_amount }}</td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -86,7 +73,7 @@
                         <td class="table-image"></td>
                         <td style="padding: 40px;"></td>
                         <td class="small-caps table-bg" style="text-align: right">Your Total</td>
-                        <td class="table-bg">${{ Cart::total() }}</td>
+                        <td class="table-bg">${{ $total_amount }}</td>
                         <td class="column-spacer"></td>
                         <td></td>
                     </tr>
@@ -120,6 +107,8 @@
 
 @section('extra-js')
     <script>
+        console.log(document.getElementById('quantity').value);
+
         (function(){
 
             $.ajaxSetup({
@@ -135,14 +124,13 @@
                   url: '{{ url("/cart") }}' + '/' + id,
                   data: {
                     'quantity': this.value,
+                    'product_price_id': id
                   },
                   success: function(data) {
                     window.location.href = '{{ url('/cart') }}';
                   }
                 });
-
             });
-
         })();
 
     </script>

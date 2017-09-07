@@ -17,10 +17,10 @@ class CreateCartItemsTable extends Migration
             $table->increments('id');
             $table->integer('cart_id');
             $table->integer('product_id');
-            $table->tinyInteger('quantity');
+            $table->tinyInteger('quantity')->default(1);
             $table->double('amount');
             $table->string('barcode', 20);
-            $table->string('serial_number', 30);
+            $table->string('serial_number', 30)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

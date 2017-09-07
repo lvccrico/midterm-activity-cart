@@ -37,7 +37,7 @@ class Product extends Model
 
         $product = DB::table('products') 
         ->join('product_prices', 'products.id', '=', 'product_prices.product_id')
-        ->select('products.*', 'product_prices.product_id', 'product_prices.description as price_description', 'product_prices.price')
+        ->select('products.*', 'product_prices.id as product_price_id', 'product_prices.description as price_description', 'product_prices.price')
         ->where('product_prices.id', '=', $productPriceId)
         ->first();
         
